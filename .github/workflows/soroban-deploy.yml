@@ -1,0 +1,50 @@
+name: Soroban Deploy
+
+on:
+  workflow_call:
+    inputs:
+      network:
+        type: string
+        default: testnet
+        description: 'Target network: testnet or mainnet'
+      contract-name:
+        type: string
+        required: true
+        description: 'Name of the contract to deploy'
+    secrets:
+      STELLAR_SECRET_KEY:
+        required: true
+      SOROBAN_RPC_URL:
+        required: true
+
+jobs:
+  deploy:
+    name: Deploy ${{ inputs.contract-name }} to ${{ inputs.network }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Stellar CLI
+        run: |
+          curl -sSL https://raw.githubusercontent.com/stellar/stellar-cli/main/install.sh | bash
+          echo "$HOME/.stellar/bin" >> $GITHUB_PATH
+
+      - name: Configure network
+        run: |
+          stellar network add \
+            --rpc-url "${{ secrets.SOROBAN_RPC_URL }}" \
+            --network-passphrase "$([ '${{ inputs.network }}' = 'mainnet' ] && echo 'Public Global Stellar Network ; September 2015' || echo 'Test SDF Network ; September 2015')" \
+            ${{ inputs.network }}
+
+      - name: Build contract
+        run: stellar contract build
+
+      - name: Deploy contract
+        env:
+          STELLAR_SECRET_KEY: ${{ secrets.STELLAR_SECRET_KEY }}
+        run: |
+          stellar contract deploy \
+            --wasm target/wasm32-unknown-unknown/release/${{ inputs.contract-name }}.wasm \
+            --source "$STELLAR_SECRET_KEY" \
+            --network ${{ inputs.network }}
