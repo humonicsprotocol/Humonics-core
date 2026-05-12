@@ -1,0 +1,17 @@
+// ESM TSConfig for SDK and browser packages
+// Usage: { "extends": "@humonics/config/tsconfig.esm.json" }
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ES2020",
+    "moduleResolution": "bundler",
+    "lib": ["ES2020"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true
+  }
+}

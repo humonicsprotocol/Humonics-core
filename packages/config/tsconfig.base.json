@@ -1,0 +1,17 @@
+// Base TSConfig for all Humonics Node.js/server repos
+// Usage: { "extends": "@humonics/config/tsconfig.base.json" }
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "commonjs",
+    "lib": ["ES2022"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true
+  }
+}
