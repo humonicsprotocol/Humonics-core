@@ -1,5 +1,14 @@
 # Changelog — @humonics/types
 
+## 0.1.1 — 2026-05-12
+
+### Changed
+- `VerificationResult` — replaced `{ certified, certificate?, error? }` struct with
+  `{ status: 'certified' | 'not_certified' | 'revoked', certificate? }` to match the
+  on-chain Soroban enum shape. Soroban `#[contracttype]` cannot nest `Option<ContractType>`
+  in a struct; the enum is the correct on-chain representation.
+- Added `VerificationResultStatus` type alias.
+
 ## 0.1.0 — 2026-05-12
 
 ### Added

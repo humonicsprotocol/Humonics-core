@@ -19,11 +19,18 @@ export interface Certificate {
 }
 
 // ─── Verification ─────────────────────────────────────────────────────────────
+//
+// NOTE: The on-chain VerificationResult is a Rust enum (Soroban contracttype
+// cannot nest Option<ContractType> in a struct). Consumers of the SDK receive
+// this mapped to the shape below by the SDK's parseCertificate layer.
+
+export type VerificationResultStatus = 'certified' | 'not_certified' | 'revoked';
 
 export interface VerificationResult {
-  certified: boolean;
+  /** 'certified' | 'not_certified' | 'revoked' */
+  status: VerificationResultStatus;
+  /** Present when status is 'certified' or 'revoked' */
   certificate?: Certificate;
-  error?: string;
 }
 
 // ─── ZK Proof ────────────────────────────────────────────────────────────────
